@@ -41,34 +41,37 @@ A solução não inicia acessos à rede interna. O tráfego de saída pode ser l
 
 Os seguintes parâmetros devem ser definidos dentro do arquivo prod-compose.yaml.
 
-* **vaultCloudClientId** - ID da aplicação cadastrada na cloud para o CESS. Cada instância deve ter sua própria identificação.
+* **externalMd** - Url callback interna
 
-* **vaultCloudClientSecret** - Senha da aplicação cadastrada na cloud para o CESS.
+* **redirectUriMd** - Url callback do sample.php
 
-* **lifetime** - Tempo (segundos) que os arquivos (tcn) irão ficar armazenado no CESS.
+* **baseUrlInternal** - base url interna. (fixo https://localhost:8080)
 
-* **sleep** - Intervalo (segundos) que o garbage collector irá executar para limpar os arquivos.
+* **baseUrl** - base url externa
 
-* **limit** - Quantidade máxima de arquivos que serão apagados a cada iteração do garbage.
+* **myBaseUri** - myBaseUri
 
-* **cessUrl** - Define a URL utilizada para conexão ao Cess. Normalmente cria-se um registro de DNS apontando para o 
-container.
+* **dirTrust** - Diretório que terá as cadeias confiáveis para validar certificado 
+
+* **companyLogo** - url com logo da empresa o
 
 * **APACHE_SSL** 
    - Defina para true se deseja que o Apache do container forneça o serviço com TLS ativo.  
    - Espera-se que o certificado digital e a respectiva chave sejam fornecidos através de um ponto de montagem no 
    container. Descomente a sessão 'volumes' e configure os arquivos conforme orientação.
 
-        - Arquivo **path_crt** 
-            - Espera-se um arquivo com a parte pública do certificado digital concatenado com as cadeias intermediárias 
-            da Autoridade Certificado emissora. Todos os certificados devem estar no formato PEM (codificado em base64).
+        - Arquivo **./cert/apache.crt** 
+            - Espera-se um arquivo com a parte pública do certificado digital.
 
-        - Arquivo **path_key** 
+        - Arquivo **./cert/apache.key** 
             - Espera-se um arquivo contendo apenas a chave privada correspondente ao certificado digital utilizado. 
             A chave privada não pode ter senha e deve estar no formato PEM (codificada em base64).
+            
+        - Arquivo **./cert/AC.pem**
+            - Espera-se um arquivo contendo a cadeia que o apache confiará para fazer o handshake.
 
-* **PORTA_EXTERNA** - Define a porta pela qual o serviço do CESS será exposto.
-
+* **urlsMultiCloud** - variável contendo as urls, clientid, clientsecret e id dos PSCs
+ 
 ---
 #### Exemplo:
 
