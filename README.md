@@ -70,7 +70,8 @@ Os seguintes parâmetros devem ser definidos dentro do arquivo prod-compose.yaml
         - Arquivo **./cert/AC.pem**
             - Espera-se um arquivo contendo a cadeia que o apache confiará para fazer o handshake.
 
-* **urlsMultiCloud** - variável contendo as urls, clientid, clientsecret e id dos PSCs
+* **urlsMultiCloud** - variável contendo as urls, clientid, clientsecret e id dos PSCs (encodado em json). Exemplo: 
+{uri:{"id":"nome","adapterid":"nome","client_id":"nome","client_secret":"nome"}}
  
 ---
 #### Exemplo:
@@ -86,20 +87,20 @@ Teremos a seguinte configuração:
 ```yaml
     ...
       # Se necessário, edite apenas as variávies abaixo: #
-      - "cessUrl=https://cess.vaultid.com.br"
       - "APACHE_SSL=true"
     ports:
       # Definir a PORTA_EXTERNA pela qual o container será exposto na rede.
       - 443:8080
     volumes:
-      - /opt/certs/cert.pem:/etc/apache2/cert/cert.pem
-      - /opt/certs/cert.key:/etc/apache2/cert/cert.key
+      - ./cert/apache.crt:/etc/apache2/cert/cert.pem
+      - ./cert/apache.key:/etc/apache2/cert/cert.key
+      - ./cert/AC.pem:/etc/apache2/cert/AC.pem
     ... 
 ```
 
-### Executando o CESS
+### Executando o CEAS
 
-* **Atenção:** Antes de continuar é necessário solicitar o acesso ao repositório de imagens do CESS diretamente à equipe 
+* **Atenção:** Antes de continuar é necessário solicitar o acesso ao repositório de imagens do CEAS diretamente à equipe 
 de integração da VaultID.
    
 Após concluir e validar a instalação do docker e do docker-compose, salve e configure o arquivo cess-compose.yaml no servidor de escolhido.
@@ -112,19 +113,11 @@ De posse do usuário e senha fornecidos, execute:
 docker login harbor.lab.vaultid.com.br
 ```
 
-<p align="center">
-  <img src="/images/login.png"/>
-</p>
-
 2 - Iniciando a aplicação.
 
 ```bash
-docker-compose -f cess-compose.yaml up -d
+docker-compose -f ceas-compose.yaml up -d
 ```
-
-<p align="center">
-  <img src="/images/dockerup.png"/>
-</p>
 
 3 - Verificando o estado da aplicação:
 
@@ -132,15 +125,7 @@ docker-compose -f cess-compose.yaml up -d
 docker ps 
 ```
 
-<p align="center">
-  <img src="/images/dockerps2.png"/>
-</p>
-
 4 - Testando a aplicação:
 
 Após a confirmação de execução da aplicação é possível validar o estado da mesma acessando a URL configurada 
-em **cessUrl** ou, diretamente no servidor com a combinação **IP_SERVIDOR:PORTA_EXTERNA**. 
-
-<p align="center">
-  <img src="/images/teste.png"/>
-</p>
+em **baseUrl/sample.php** ou, diretamente no servidor com a combinação **IP_SERVIDOR:PORTA_EXTERNA**. 
