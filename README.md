@@ -78,8 +78,7 @@ Os seguintes parâmetros devem ser definidos dentro do arquivo prod-compose.yaml
 
 Considerando o cenário:  
  - SSL ativo;
- - Os certificados estão salvos na pasta /opt/certs/cert.pem e /opt/certs/cert.key;  
- - A url de acesso externo será https://cess.vaultid.com.br;
+ - Os certificados estão salvos na pasta ./cert/apache.crt , ./cert/apache.key e ./cert/AC.pem;  
  - A porta que o container deve expor é a 443;  
     
 Teremos a seguinte configuração:
