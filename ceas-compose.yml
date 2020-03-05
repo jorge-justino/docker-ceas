@@ -10,6 +10,7 @@ services:
     restart: always
     user: "33"
     environment:
+     - 'version=1.0.0'
      - 'clientIdMd=sample'       
      - 'clientSecretMd=sample'
      - 'externalMd=<url base>/callback' #url callback interna
