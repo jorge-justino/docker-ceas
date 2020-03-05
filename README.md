@@ -41,6 +41,8 @@ A solução não inicia acessos à rede interna. O tráfego de saída pode ser l
 
 Os seguintes parâmetros devem ser definidos dentro do arquivo prod-compose.yaml.
 
+* **version** - Versão
+
 * **externalMd** - Url callback interna
 
 * **redirectUriMd** - Url callback do sample.php
