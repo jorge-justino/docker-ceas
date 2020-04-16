@@ -3,46 +3,40 @@
 # 02/01/2020
 version: "3"
 services:
-  cess:
-    image: harbor.lab.vaultid.com.br/cess/ceas:1.0.0
+  ceas:
+    image: harbor.lab.vaultid.com.br/cess/ceas:1.0.1
     depends_on:
       - redis
     restart: always
     user: "33"
     environment:
-     - 'version=1.0.0'
-     - 'clientIdMd=sample'       
-     - 'clientSecretMd=sample'
-     - 'externalMd=<url base>/callback' #url callback interna
-     - 'redirectUriMd=<url base>/sample.php' #url callback do sample.php
-     - 'baseUrlInternal=<url base>' #base url interna
-     - 'baseUrl=<url base>' #base url externa
-     - 'myBaseUri=<url base>/sample.php' #url base sample
+     - 'version=1.0.1'
+     - 'clientIdMd=false'
+     - 'clientSecretMd=false'
+     - 'externalMd=http://localhost:8080/callback' #url callback interna
+     - 'redirectUriMd=http://localhost:8080/sample.php' #url callback do sample.php
+     - 'baseUrlInternal=http://localhost:8080' #base url interna
+     - 'baseUrl=http://localhost:8080' #base url externa
+     - 'myBaseUri=http://localhost:8080/sample.php' #url base sample
      - "redisHost=redis"
      - "redisPort=6379"
      - "dirTrust=/var/www/data/trust/" #cadeias que validador de assinatura confiará 
-     - "lifetime=86400" 
-     - "companyLogo=<url>" #url com logo da empresa
+     - "lifetime=86400"
+     - "companyLogo=https://pbs.twimg.com/profile_images/887672393648414720/TVMqDVLD_400x400.jpg" #url com logo da empresa
      - "sslverifypeer=false"
-     - "APACHE_SSL=true"
-     - 'urlsMultiCloud={"https:\/\/apicloudid.hom.vaultid.com.br":{"id":"VAULTIDHOM","adapterid":"VAULTIDHOM","client_id":"clientid","client_secret":"clientsecret"},"https:\/\/apicloudid.vaultid.com.br":{"id":"VAULTID","adapterid":"VAULTID","client_id":"clientid","client_secret":"clientsecret"},"https:\/\/api.birdid.com.br":{"id":"BIRDID","adapterid":"BIRDID","client_id":"clientid","client_secret":"clientsecret"},"https:\/\/neoid.estaleiro.serpro.gov.br\/smartcert-api":{"id":"SERPRO","adapterid":"SERPRO","client_id":"clientid","client_secret":"clientsecret", "grant_type":{"password": false}}}'
-
+     - 'urlsMultiCloud={"https:\/\/apicloudid.hom.vaultid.com.br":{"id":"VAULTID","adapterid":"VAULTID","client_id":"false","client_secret":"false"},"https:\/\/apihom.birdid.com.br":{"id":"BIRDID","adapterid":"BIRDID","client_id":"false","client_secret":"false"}}'
     ports:
       # Definir a PORTA_EXTERNA TCP pela qual o container será exposto na rede.
       - 8080:8080
-    volumes:
-      - ./cert/apache.crt:/etc/apache2/cert/cert.pem
-      - ./cert/apache.key:/etc/apache2/cert/cert.key
-      - ./cert/AC.pem:/etc/apache2/cert/AC.pem
     networks:
-      - nw-cess
+      - nw-ceas
   redis:
     image: "healthcheck/redis:alpine"
     restart: always
     networks:
-      - nw-cess
+      - nw-ceas
 networks:
-  nw-cess:
+  nw-ceas:
     driver: bridge
     ipam:
       driver: default
